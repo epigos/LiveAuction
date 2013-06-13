@@ -7,10 +7,16 @@ class Auction(models.Model):
 	Description = models.CharField(max_length=250, null=True, blank=True)
 	Hour = models.DateTimeField(auto_now=False)
 
+	def __unicode__(self):
+		return self.Title
+
 class Bid(models.Model):
 	Id = models.AutoField(primary_key=True)
 	Auction = models.ForeignKey(Auction)
 	User = models.ForeignKey(User)
 	Amount = models.DecimalField(max_digits=12, decimal_places=2)
 	Hour = models.DateTimeField(auto_now=True)
+
+	def __unicode__(self):
+		return self.User.username
 
