@@ -1,17 +1,11 @@
 from django.conf.urls import patterns, include, url
-
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'app.views.home', name='home'),
-    # url(r'^app/', include('app.foo.urls')),
-	url(r'^$', 'LiveAuction.views.index', name='index'),
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
+	url(r'^$', 'LiveAuction.views.index_view', name='index_view'),
+	url(r'^login/$', 'LiveAuction.views.login_view', name='login_view'),
+	url(r'^logout/$', 'LiveAuction.views.logout_view', name='logout_view'),
     url(r'^admin/', include(admin.site.urls))
 )
