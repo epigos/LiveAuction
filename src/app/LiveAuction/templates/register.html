@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %} Registro {% endblock %}
+{% block content %}
+<h3>Get started with Live Auction</h3>
+<form action="." method="POST">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button class="btn btn-primary" type="submit"> Submit </button>
+</form>
+
+{% endblock %}

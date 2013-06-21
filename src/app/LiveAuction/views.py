@@ -4,7 +4,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from LiveAuction.forms import LoginForm
+from LiveAuction.forms import LoginForm, RegisterForm
 import django
 
 def index_view(request):
@@ -33,3 +33,21 @@ def login_view(request):
 def logout_view(request):
 	logout(request)
 	return HttpResponseRedirect('/')
+
+def register_view(request):
+	form = RegisterForm()
+	if request.method == "POST":
+		form = RegisterForm(request.POST)
+		if form.is_valid():
+			usuario = form.cleaned_data['username']
+			email = form.cleaned_data['email']
+			password_one = form.cleaned_data['password_one']
+			password_two = form.cleaned_data['password_two']
+			u = User.objects.create_user(username=usuario,email=email,password=password_one)
+			u.save() # Guardar el objeto
+			return render_to_response('thanks_register.html',context_instance=RequestContext(request))
+		else:
+			ctx = {'form':form}
+			return 	render_to_response('register.html',ctx,context_instance=RequestContext(request))
+	ctx = {'form':form}
+	return render_to_response('register.html',ctx,context_instance=RequestContext(request))
