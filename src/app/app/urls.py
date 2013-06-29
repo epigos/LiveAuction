@@ -8,5 +8,8 @@ urlpatterns = patterns('',
 	url(r'^login/$', 'LiveAuction.views.login_view', name='login_view'),
 	url(r'^logout/$', 'LiveAuction.views.logout_view', name='logout_view'),
 	url(r'^register/$', 'LiveAuction.views.register_view', name='register_view'),
-    url(r'^admin/', include(admin.site.urls))
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^Auctions/$', 'LiveAuction.views.auction_index_view', name='auction_index_view')
 )
+
+

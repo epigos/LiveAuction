@@ -51,3 +51,6 @@ def register_view(request):
 			return 	render_to_response('register.html',ctx,context_instance=RequestContext(request))
 	ctx = {'form':form}
 	return render_to_response('register.html',ctx,context_instance=RequestContext(request))
+
+def auction_index_view(request):
+	return render_to_response('Auctions/index.html',context_instance=RequestContext(request))
