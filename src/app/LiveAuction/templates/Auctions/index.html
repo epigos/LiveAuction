@@ -47,18 +47,42 @@
 		</table>
 	    <div class="pagination">
 			<ul>
-				<li><a class="btn btn-primary" href="/auctions/page/1"><i class="icon-fast-backward icon-white"></i></a></li>
+				<li>
+					<a class="btn btn-primary" href="/auctions/page/1">
+						<i class="icon-fast-backward icon-white"></i>
+					</a>
+				</li>
 				{% if auctions.has_previous %}
-					<li><a class="btn btn-primary" href="/auctions/page/{{auctions.previous_page_number }}/"><i class="icon-step-backward icon-white"></i> </a></li>
+					<li>
+						<a class="btn btn-primary" href="/auctions/page/{{auctions.previous_page_number }}/">
+							<i class="icon-step-backward icon-white"></i>
+						</a>
+					</li>
 				{% else %}
-					<li><a class="btn btn-primary"href="#"> <i class="icon-step-backward icon-white"></i> </a></li>
+					<li>
+						<a class="btn btn-primary"href="#">
+							<i class="icon-step-backward icon-white"></i>
+						</a>
+					</li>
 				{% endif %}
 				{% if auctions.has_next %}
-					<li><a class="btn btn-primary" href="/auctions/page/{{auctions.next_page_number }}/"> <i class="icon-step-forward icon-white"></i> </a></li>
+					<li>
+						<a class="btn btn-primary" href="/auctions/page/{{auctions.next_page_number }}/">
+							<i class="icon-step-forward icon-white"></i> 
+						</a>
+					</li>
 				{% else %}
-					<li><a class="btn btn-primary" href="#"> <i class="icon-step-forward icon-white"></i> </a></li>
+					<li>
+						<a class="btn btn-primary" href="#">
+							<i class="icon-step-forward icon-white"></i>
+						</a>
+					</li>
 				{% endif %}
-				<li><a class="btn btn-primary" href="/auctions/page/{{auctions.paginator.num_pages }} "><i class="icon-fast-forward icon-white"></i></a><li>
+				<li>
+					<a class="btn btn-primary" href="/auctions/page/{{auctions.paginator.num_pages }} ">
+						<i class="icon-fast-forward icon-white"></i>
+					</a>
+				<li>
 			</ul>
 		</div>
 		<h4> Página {{ auctions.number }} de {{ productos.paginator.num_pages }}</h4>
@@ -68,7 +92,6 @@
 			<i class="icon-info-sign"></i>
 			There are not auctions 
 		</p>
-
 	{% endif %}
 
 {% endblock %}
