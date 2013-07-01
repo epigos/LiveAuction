@@ -4,8 +4,11 @@ from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from LiveAuction.models import Auction
 from LiveAuction.forms import LoginForm, RegisterForm
 import django
+
+from django.core.paginator import Paginator,EmptyPage,InvalidPage
 
 def index_view(request):
 	return render_to_response('index.html',context_instance=RequestContext(request))
@@ -52,5 +55,20 @@ def register_view(request):
 	ctx = {'form':form}
 	return render_to_response('register.html',ctx,context_instance=RequestContext(request))
 
-def auction_index_view(request):
-	return render_to_response('Auctions/index.html',context_instance=RequestContext(request))
+def auction_index_view(request, pagina):
+
+	auction_list = Auction.objects.all()
+	paginator = Paginator(auction_list, 5)
+
+	try:
+		page = int(pagina)
+	except:
+		page = 1
+	try:
+		auctions = paginator.page(page)
+	except (EmptyPage,InvalidPage):
+		auctions = paginator.page(paginator.num_pages)
+
+	ctx = {'auctions':auctions}
+	
+	return render_to_response('Auctions/index.html', ctx, context_instance=RequestContext(request))
