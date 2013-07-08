@@ -1,0 +1,11 @@
+{% extends './base.html' %}
+{% block title %} Auction {{auction.Title}} {% endblock %}
+{%block content %}
+<h1>{{ auction.Title }}</h1>
+<br>
+<p>ID: {{ auction.Id }}</p>
+<p>{{ auction.Descripcion }}</p>
+<p>Date: {{ auction.Hour }}</p>
+<br>
+<a class="btn btn-primary" href="javascript:window.history.go(-1);">Return to the list</a>
+{% endblock %}

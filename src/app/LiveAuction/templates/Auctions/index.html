@@ -21,15 +21,15 @@
 					<th class="td-actions"></th>
 				</tr>
 			</thead>
-		{% for p in auctions %}
+		{% for auction in auctions %}
 			<tbody>
 			<tr>
-				<td>{{ p.Id }}</td>
-				<td>{{ p.Title }}</td>
-				<td>{{ p.Description }}</td>
-				<td>{{ p.Hour }}</td>
+				<td>{{ auction.Id }}</td>
+				<td>{{ auction.Title }}</td>
+				<td>{{ auction.Description }}</td>
+				<td>{{ auction.Hour }}</td>
 				<td>
-					<a href="" class="btn btn-primary">
+					<a href="/auction/{{auction.Id}}/" class="btn btn-primary">
 						<i class="icon-zoom-in icon-white"></i>
 					</a>
 				{% if user.is_authenticated %}

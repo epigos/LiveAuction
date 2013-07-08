@@ -46,14 +46,14 @@ def register_view(request):
 			email = form.cleaned_data['email']
 			password_one = form.cleaned_data['password_one']
 			password_two = form.cleaned_data['password_two']
-			u = User.objects.create_user(username=usuario,email=email,password=password_one)
+			u = User.objects.create_user(username = usuario, email = email, password = password_one)
 			u.save() # Guardar el objeto
-			return render_to_response('thanks_register.html',context_instance=RequestContext(request))
+			return render_to_response('thanks_register.html', context_instance = RequestContext(request))
 		else:
 			ctx = {'form':form}
-			return 	render_to_response('register.html',ctx,context_instance=RequestContext(request))
+			return 	render_to_response('register.html',ctx,context_instance = RequestContext(request))
 	ctx = {'form':form}
-	return render_to_response('register.html',ctx,context_instance=RequestContext(request))
+	return render_to_response('register.html', ctx, context_instance = RequestContext(request))
 
 def auction_index_view(request, pagina):
 
@@ -71,4 +71,9 @@ def auction_index_view(request, pagina):
 
 	ctx = {'auctions':auctions}
 	
-	return render_to_response('Auctions/index.html', ctx, context_instance=RequestContext(request))
+	return render_to_response('Auctions/index.html', ctx, context_instance = RequestContext(request))
+
+def singleAuction_view(request, id_auction):
+	auction = Auction.objects.get(Id=id_auction) 
+	ctx = { 'auction': auction }
+	return render_to_response('Auctions/SingleAuction.html', ctx, context_instance = RequestContext(request))
