@@ -49,7 +49,5 @@ class RegisterForm(forms.Form):
 
 
 class AddAuctionForm(forms.ModelForm):
-
     class Meta:
-
         model = Auction
