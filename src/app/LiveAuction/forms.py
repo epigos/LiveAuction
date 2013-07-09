@@ -3,6 +3,7 @@
 
 from django import forms
 from django.contrib.auth.models import User
+from LiveAuction.models import Auction
 
 
 class LoginForm(forms.Form):
@@ -45,3 +46,10 @@ class RegisterForm(forms.Form):
             pass
         else:
             raise forms.ValidationError('The passwords do not match')
+
+
+class AddAuctionForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Auction

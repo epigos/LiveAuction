@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from LiveAuction.models import Auction
-from LiveAuction.forms import LoginForm, RegisterForm
+from LiveAuction.forms import LoginForm, RegisterForm, AddAuctionForm
 import django
 
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
@@ -25,7 +25,7 @@ def about_view(request):
 
 
 def login_view(request):
-    mensaje = ''
+    message = ''
 
     if request.user.is_authenticated():
         return HttpResponseRedirect('/')
@@ -44,11 +44,11 @@ def login_view(request):
                     login(request, user)
                     return HttpResponseRedirect('/')
                 else:
-                    mensaje = \
+                    message = \
                         'The username or password you entered is incorrect.'
 
         form = LoginForm()
-        context = {'form': form, 'mensaje': mensaje}
+        context = {'form': form, 'message': message}
 
         return render_to_response('login.html', context,
                                   context_instance=RequestContext(request))
@@ -114,4 +114,26 @@ def singleAuction_view(request, id_auction):
     context = {'auction': auction}
 
     return render_to_response('Auctions/SingleAuction.html', context,
+                              context_instance=RequestContext(request))
+
+
+def add_auction_view(request):
+    message = ''
+
+    if request.method == 'POST':
+        form = AddAuctionForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            add = form.save(commit=False)
+            add.status = True
+            add.save()
+            message = 'Saved successfully.'
+
+            return HttpResponseRedirect('/auction/%s' % add.id)
+    else:
+        form = AddAuctionForm()
+
+    context = {'form': form, 'message': message}
+
+    return render_to_response('Auctions/addAuction.html', context,
                               context_instance=RequestContext(request))
