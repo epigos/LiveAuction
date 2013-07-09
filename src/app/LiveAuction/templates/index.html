@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% block title %} Inicio - Bienvenidos {% endblock %}
-{% block content %} 
-<p>Esta es mi primera página en Django</p>
+{% block title %} Home - Welcome {% endblock %}
+{% block content %}
+<p>Django</p>
 {% if user.is_authenticated %}
-    <p> Bienvenido {{ user.username }}</p>
-    {% if user.get_profile.telefono %}
-        <p> Numero Tel: {{ user.get_profile.telefono }}</p>
-    {% endif %}
+<p>Welcome {{ user.username }}</p>
+{% if user.get_profile.telefono %}
+<p>Cel: {{ user.get_profile.telefono }}</p>
+{% endif %}
 {% endif%}
 {% endblock %}
