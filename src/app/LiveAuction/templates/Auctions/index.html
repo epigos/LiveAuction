@@ -1,9 +1,9 @@
 {% extends './base.html' %}
 {% block title %} Auctions List {% endblock %}
 {% block content %}
-<h3>Auctions List</h3>
+<h4>Auctions List</h4>
 {% if user.is_authenticated %}
-<a href="{% url 'add_auction_view' %}" class="btn btn-primary"> <i class="icon-plus icon-white"></i>
+<a href="{% url 'add_auction_view' %}" class="btn"> <i class="icon-plus icon-white"></i>
 	New
 </a>
 {% endif%}
@@ -16,8 +16,8 @@
 			<th>Id</th>
 			<th>Title</th>
 			<th>Description</th>
-			<th>Hour</th>
-			<th class="td-actions"></th>
+			<th>Date</th>
+			<th>Actions</th>
 		</tr>
 	</thead>
 	{% for auction in auctions %}
@@ -28,14 +28,15 @@
 			<td>{{ auction.Description }}</td>
 			<td>{{ auction.Hour }}</td>
 			<td>
-				<a href="/auction/{{auction.Id}}/" class="btn btn-primary"> <i class="icon-zoom-in icon-white"></i>
+				<a href="/auction/{{auction.Id}}/" class="btn btn-mini"> 
+					<i class="icon-zoom-in icon-white"></i>
 				</a>
 				{% if user.is_authenticated %}
-				<a href="/edit/auction/{{auction.id}}/" class="btn btn-primary">
+				<a href="/edit/auction/{{auction.Id}}/" class="btn btn-mini">
 					<i class="icon-edit icon-white"></i>
 				</a>
-				<a href="" class="btn btn-primary">
-					<i class="icon-remove icon-white"></i>
+				<a href="" class="btn btn-mini">
+					<i class="icon-trash icon-white"></i>
 				</a>
 				{% endif %}
 			</td>
@@ -43,48 +44,48 @@
 	</tbody>
 	{% endfor %}
 </table>
-<div class="pagination">
+<div class="pagination pagination-mini">
 	<ul>
 		<li>
-			<a class="btn btn-primary" href="/auctions/page/1">
-				<i class="icon-fast-backward icon-white"></i>
+			<a class="btn btn-mini" href="/auctions/page/1">
+				<i class="icon-fast-backward"></i>
 			</a>
 		</li>
 		{% if auctions.has_previous %}
 		<li>
-			<a class="btn btn-primary" href="/auctions/page/{{auctions.previous_page_number }}/">
-				<i class="icon-step-backward icon-white"></i>
+			<a class="btn btn-mini" href="/auctions/page/{{auctions.previous_page_number }}/">
+				<i class="icon-step-backward"></i>
 			</a>
 		</li>
 		{% else %}
 		<li>
-			<a class="btn btn-primary"href="#">
-				<i class="icon-step-backward icon-white"></i>
+			<a class="btn btn-mini"href="#">
+				<i class="icon-step-backward"></i>
 			</a>
 		</li>
 		{% endif %}
-				{% if auctions.has_next %}
+		{% if auctions.has_next %}
 		<li>
-			<a class="btn btn-primary" href="/auctions/page/{{auctions.next_page_number }}/">
-				<i class="icon-step-forward icon-white"></i>
+			<a class="btn btn-mini" href="/auctions/page/{{auctions.next_page_number }}/">
+				<i class="icon-step-forward"></i>
 			</a>
 		</li>
 		{% else %}
 		<li>
-			<a class="btn btn-primary" href="#">
-				<i class="icon-step-forward icon-white"></i>
+			<a class="btn btn-mini" href="#">
+				<i class="icon-step-forward"></i>
 			</a>
 		</li>
 		{% endif %}
 		<li>
-			<a class="btn btn-primary" href="/auctions/page/{{auctions.paginator.num_pages }} ">
-				<i class="icon-fast-forward icon-white"></i>
+			<a class="btn btn-mini" href="/auctions/page/{{auctions.paginator.num_pages }} ">
+				<i class="icon-fast-forward"></i>
 			</a>
 			<li></ul>
 		</div>
-		<h4>
+		<p>
 			Page {{ auctions.number }} of {{ auctions.paginator.num_pages }}
-		</h4>
+		</p>
 		{% else %}
 		<br>
 		<p class="text-info">

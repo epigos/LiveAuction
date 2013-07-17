@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+from django.views.generic import  DeleteView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
@@ -121,7 +123,7 @@ def add_auction_view(request):
     message = ''
 
     if request.method == 'POST':
-        form = AddAuctionForm(request.POST, request.FILES)
+        form = AddAuctionForm(request.POST)
 
         if form.is_valid():
             add = form.save(commit=False)
@@ -129,7 +131,7 @@ def add_auction_view(request):
             add.save()
             message = 'Saved successfully.'
 
-            return HttpResponseRedirect('/auction/%s' % add.id)
+            return HttpResponseRedirect('/auction/%s' % add.Id)
     else:
         form = AddAuctionForm()
 
@@ -137,3 +139,42 @@ def add_auction_view(request):
 
     return render_to_response('Auctions/addAuction.html', context,
                               context_instance=RequestContext(request))
+
+
+def edit_auction_view(request,id_auction):
+    info = "Loading..."
+    auction = Auction.objects.get(Id=id_auction)
+
+    if request.method == "POST":
+        form = AddAuctionForm(request.POST,instance=auction)
+        if form.is_valid():
+            edit_auction = form.save(commit=False)
+            edit_auction.status = True
+            edit_auction.save()
+            info = "Edited successfully."
+            return HttpResponseRedirect('/auction/%s/' % edit_auction.Id)
+    else:
+        form = AddAuctionForm(instance=auction)
+    context = {'form':form,'informacion':info}
+    return render_to_response('Auctions/editAuction.html',context,context_instance=RequestContext(request))
+
+
+class delete_auction_view(DeleteView):
+    model = Auction
+    template_name = "employees_confirm_delete.html"
+    success_url = "/"
+
+    # allow delete only logged in user by appling decorator
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        # maybe do some checks here for permissions ...
+
+        resp = super(delete_auction_view, self).dispatch(*args, **kwargs)
+
+        if self.request.is_ajax():
+            response_data = {"result": "ok"}
+            return HttpResponse(json.dumps(response_data),
+                content_type="application/json")
+        else:
+            return resp
+

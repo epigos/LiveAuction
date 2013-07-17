@@ -1,11 +1,11 @@
 {% extends './base.html' %}
 {% block title %} Auction {{auction.Title}} {% endblock %}
 {%block content %}
-<h3>{{ auction.Title }}</h3>
+<h4>{{ auction.Title }}</h4>
 <br>
 <p>ID: {{ auction.Id }}</p>
 <p>{{ auction.Descripcion }}</p>
 <p>Date: {{ auction.Hour }}</p>
 <br>
-<a class="btn btn-primary" href="javascript:window.history.go(-1);">Return to the list</a>
+<a class="btn" href="/auctions/page/1/">Return to the list</a>
 {% endblock %}

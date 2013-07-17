@@ -47,7 +47,6 @@ class RegisterForm(forms.Form):
         else:
             raise forms.ValidationError('The passwords do not match')
 
-
 class AddAuctionForm(forms.ModelForm):
     class Meta:
         model = Auction

@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block title %} Sign up for LiveAuction {% endblock %}
 {% block content %}
-<h3>Get started with Live Auction</h3>
+<h4>Get started with Live Auction</h4>
 <form action="." method="POST">
 	{% csrf_token %}
 	{{ form.as_p }}
-	<button class="btn btn-primary" type="submit">Submit</button>
+	<button class="btn" type="submit">Submit</button>
 </form>
 {% endblock %}

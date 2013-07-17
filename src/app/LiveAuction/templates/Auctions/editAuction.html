@@ -1,12 +1,12 @@
 {% extends './base.html' %}
-{% block title %} Add Auction {% endblock %}
+{% block title %} Edit Auction {% endblock %}
 
 {% block link %}
 	<link href="{{STATIC_URL}}css/datepicker.css" rel="stylesheet">
 {% endblock%}
 
 {% block content %}
-	<h4>Add new Auction</h4>
+	<h4>Edit Auction</h4>
 	<form action="." method="POST" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{ form.as_p }}
