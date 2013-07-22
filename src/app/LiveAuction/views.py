@@ -172,24 +172,17 @@ def edit_auction_view(request,id_auction):
     return render_to_response('Auctions/editAuction.html',context,context_instance=RequestContext(request))
 
 
-class delete_auction_view(DeleteView):
-    model = Auction
-    template_name = "employees_confirm_delete.html"
-    success_url = "/"
+def delete_auction_view(request,id_auction):
+    delete_auction = Auction.objects.get(Id = id_auction)
+    delete_auction.delete()
 
-    # allow delete only logged in user by appling decorator
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        # maybe do some checks here for permissions ...
+    auction_list = Auction.objects.all()
+    paginator = Paginator(auction_list, 5)
+    page = 1
+    auctions = paginator.page(page)
+    context = {'auctions': auctions}
 
-        resp = super(delete_auction_view, self).dispatch(*args, **kwargs)
-
-        if self.request.is_ajax():
-            response_data = {"result": "ok"}
-            return HttpResponse(json.dumps(response_data),
-                content_type="application/json")
-        else:
-            return resp
+    return render_to_response('Auctions/index.html',context,context_instance=RequestContext(request))
 
 @csrf_exempt
 def node_api(request):
