@@ -14,5 +14,6 @@ urlpatterns = patterns('',
     url(r'^auction/(?P<id_auction>.*)/$','LiveAuction.views.singleAuction_view',name='singleAuction_view'),
     url(r'^add/auction/$','LiveAuction.views.add_auction_view',name= "add_auction_view"),
     url(r'^edit/auction/(?P<id_auction>.*)/$','LiveAuction.views.edit_auction_view',name="edit_auction_view"),
-    url(r'^delete/auction/(?P<id_auction>.*)/$','LiveAuction.views.delete_auction_view',name="delete_auction_view")
+    url(r'^delete/auction/(?P<id_auction>.*)/$','LiveAuction.views.delete_auction_view',name="delete_auction_view"),
+    url(r'^node_api$', 'LiveAuction.views.node_api', name='node_api')
 )

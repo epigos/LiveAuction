@@ -7,5 +7,41 @@
 <p>{{ auction.Descripcion }}</p>
 <p>Date: {{ auction.Hour }}</p>
 <br>
+<p>Highest Bid: <span id="highestBid">{{ bid.Amount }}</span> at <span id="bidTime">{{ bid.Hour }}</span></p>
+<input id="newBidAmount"/>
+<input id="auctionId" type="hidden" value="{{ auction.Id }}"/>
+<a class="btn" id="newBid" href="#">New Bid</a>
+<br>
+<br>
 <a class="btn" href="/auctions/page/1/">Return to the list</a>
 {% endblock %}
+{%block script %}
+<script src="http://localhost:4000/socket.io/socket.io.js"></script>
+<script>
+	$(document).ready(function(){
+		window.client = io.connect('localhost', {port: 4000});
+      
+		client.on('connect', function(){
+			console.log("connect");
+		});
+
+		client.emit('subscribeAuction', $("#auctionId").val());
+
+		client.on('notifyNewBid', function(data) {
+			$("#highestBid").text(data.amount);
+			$("#bidTime").text(data.time);
+		});
+
+		$("#newBid").on("click", newBid);
+    });
+
+    function newBid(){
+    	var data = {
+			auctionId: $("#auctionId").val(),
+			amount: $("#newBidAmount").val()
+		};
+
+    	window.client.emit('newBid', data);
+    }
+  </script>
+  {% endblock %}

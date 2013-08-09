@@ -6,15 +6,23 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseServerError
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from LiveAuction.models import Auction
+from django.contrib.sessions.models import Session
+from django.views.decorators.csrf import csrf_exempt
+from django.core.serializers.json import DjangoJSONEncoder
+from datetime import datetime
+from LiveAuction.models import Auction, Bid
 from LiveAuction.forms import LoginForm, RegisterForm, AddAuctionForm
+from django.db.models import Max
+from django.utils.log import getLogger
 import django
+import json
 
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
+logger = getLogger('app')
 
 def index_view(request):
     return render_to_response('index.html',
@@ -113,7 +121,12 @@ def auction_index_view(request, pagina):
 
 def singleAuction_view(request, id_auction):
     auction = Auction.objects.get(Id=id_auction)
-    context = {'auction': auction}
+    higherBid = Bid.objects.filter(Id=id_auction).values('Id').annotate(Max('Amount'))
+
+    bid = Bid.objects.get(Id=higherBid[0]["Id"])
+    logger.debug(bid)
+
+    context = {'auction': auction, 'bid': bid}
 
     return render_to_response('Auctions/SingleAuction.html', context,
                               context_instance=RequestContext(request))
@@ -177,4 +190,28 @@ class delete_auction_view(DeleteView):
                 content_type="application/json")
         else:
             return resp
+
+@csrf_exempt
+def node_api(request):
+    try:
+        #Get User from sessionid
+        session = Session.objects.get(session_key=request.POST.get("sessionId"))
+        user_id = session.get_decoded().get("_auth_user_id")
+        user = User.objects.get(id=user_id)
+
+        auction = Auction.objects.get(Id=request.POST.get("auctionId"))
+        amount = request.POST.get("amount")
+        time = datetime.now()
+        
+        logger.debug(request.POST.get("auctionId"))
+
+        #Add Bid
+        Bid.objects.create(Auction=auction, User=user, Amount=amount, Hour=time)
+        data = json.dumps({ "success": True, "message": "", "auctionId":auction.Id, "amount":amount, "time":time }, cls=DjangoJSONEncoder)
+        
+        return HttpResponse(data, content_type="application/json")
+        #return HttpResponse("Everything worked :)")
+    except Exception, e:
+        return HttpResponseServerError(json.dumps({ "success": False, "message": str(e) }), content_type="application/json")
+        #return HttpResponse(str(e))
 
